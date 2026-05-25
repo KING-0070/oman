@@ -1,4 +1,4 @@
-/* Museum of the Land of Frankincense — Design System */
+* Museum of the Land of Frankincense — Design System */
 
 *,
 *::before,
@@ -1058,31 +1058,93 @@ body.nav-open {
     animation: fadeInUp 1s ease-out;
 }
 
-/* Responsive */
+/* Responsive — mobile & tablet */
 @media (max-width: 900px) {
-    .language-toggle {
-        top: auto;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
+    :root {
+        --nav-height: 64px;
     }
 
-    html[dir="ltr"] .language-toggle {
-        right: auto;
-        left: 50%;
-        transform: translateX(-50%);
+    /* backdrop-filter breaks position:fixed — menu stuck in header */
+    .navbar {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+
+    .logo-sub {
+        display: none;
+    }
+
+    .logo-title {
+        font-size: 0.9rem;
+    }
+
+    .logo-mark {
+        width: 38px;
+        height: 38px;
     }
 
     .nav-toggle {
         display: flex;
+        flex-shrink: 0;
+    }
+
+    /* Hide desktop nav in header — drawer only when open */
+    .navbar nav {
+        position: static;
+    }
+
+    .nav-links {
+        display: none;
+        position: fixed;
+        top: var(--nav-height);
+        inset-inline-end: 0;
+        inset-inline-start: auto;
+        width: min(280px, 78vw);
+        max-width: 280px;
+        height: calc(100dvh - var(--nav-height));
+        height: calc(100vh - var(--nav-height));
+        margin: 0;
+        padding: 16px 12px 24px;
+        background: var(--color-deep);
+        flex-direction: column;
+        align-items: stretch;
+        gap: 2px;
+        z-index: 1100;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        box-shadow: -8px 0 32px rgba(0, 0, 0, 0.35);
+        border-radius: 16px 0 0 0;
+    }
+
+    html[dir="rtl"] .nav-links {
+        inset-inline-end: 0;
+        inset-inline-start: auto;
+        box-shadow: -8px 0 32px rgba(0, 0, 0, 0.35);
+        border-radius: 16px 0 0 0;
+    }
+
+    html[dir="ltr"] .nav-links {
+        box-shadow: 8px 0 32px rgba(0, 0, 0, 0.35);
+        border-radius: 0 16px 0 0;
+    }
+
+    .nav-links.is-open {
+        display: flex;
+    }
+
+    .nav-links a {
+        padding: 12px 14px;
+        font-size: 0.95rem;
+        border-radius: 8px;
     }
 
     .nav-overlay {
         display: block;
         position: fixed;
         inset: 0;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 998;
+        top: var(--nav-height);
+        background: rgba(0, 0, 0, 0.45);
+        z-index: 1090;
         opacity: 0;
         pointer-events: none;
         transition: opacity var(--transition);
@@ -1093,36 +1155,34 @@ body.nav-open {
         pointer-events: auto;
     }
 
-    .nav-links {
-        position: fixed;
-        top: var(--nav-height);
-        inset-inline-end: 0;
-        width: min(300px, 85vw);
-        height: calc(100vh - var(--nav-height));
-        background: var(--color-deep);
-        flex-direction: column;
-        align-items: stretch;
-        padding: 24px;
-        gap: 4px;
-        transform: translateX(100%);
-        transition: transform var(--transition);
-        z-index: 999;
-        overflow-y: auto;
+    /* Language bar: compact, inside top area — not over content */
+    .language-toggle {
+        top: auto;
+        bottom: 12px;
+        left: 12px;
+        right: 12px;
+        transform: none;
+        justify-content: center;
+        padding: 6px;
+        z-index: 900;
+        max-width: none;
     }
 
-    html[dir="rtl"] .nav-links {
-        transform: translateX(-100%);
-        inset-inline-end: auto;
-        inset-inline-start: 0;
+    html[dir="ltr"] .language-toggle {
+        left: 12px;
+        right: 12px;
+        transform: none;
     }
 
-    .nav-links.is-open {
-        transform: translateX(0);
+    body.nav-open .language-toggle {
+        z-index: 1080;
     }
 
-    .nav-links a {
-        padding: 14px 16px;
-        font-size: 1rem;
+    .lang-btn {
+        flex: 1;
+        text-align: center;
+        padding: 8px 6px;
+        font-size: 0.7rem;
     }
 
     .about-content,
@@ -1140,6 +1200,44 @@ body.nav-open {
     section {
         padding: 64px 0;
     }
+
+    .hero {
+        padding-bottom: 72px;
+    }
+
+    body {
+        padding-bottom: 56px;
+    }
+
+    @keyframes navDrawerIn {
+        from {
+            opacity: 0;
+            transform: translateX(16px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    html[dir="rtl"] .nav-links.is-open {
+        animation: navDrawerInRtl 0.25s ease;
+    }
+
+    html[dir="ltr"] .nav-links.is-open {
+        animation: navDrawerIn 0.25s ease;
+    }
+
+    @keyframes navDrawerInRtl {
+        from {
+            opacity: 0;
+            transform: translateX(-16px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
 }
 
 @media (max-width: 480px) {
@@ -1150,6 +1248,10 @@ body.nav-open {
 
     .cta-btn {
         width: 100%;
+    }
+
+    .nav-links {
+        width: min(260px, 82vw);
     }
 }
 
@@ -1165,3 +1267,4 @@ body.nav-open {
         scroll-behavior: auto;
     }
 }
+
